@@ -1,16 +1,25 @@
 <section class="container">
   <header>Que livro você procura?</header>
   <div class="busca">
-    <input type="search" [(ngModel)]="campoBusca" />
-    <button (click)="buscarLivros()">
+    <input type="search" [formControl]="campoBusca" />
+    <button>
       <img src="assets/imagens/icone-busca.png" alt="Lupa de cor roxa" />
     </button>
   </div>
   <p>Busque por assunto, autoria, nome...</p>
-  <div class="container-card" *ngIf="listaLivros?.length > 0; else telaInicial">
-    <div *ngFor="let livro of listaLivros">
+  <div class="resultados mensagem-erro" *ngIf="mensagemErro">
+    {{ mensagemErro }}
+  </div>
+  <div class="resultados" *ngIf="totalDeLivros">
+    {{ totalDeLivros }} resultados encontrados
+  </div>
+  <div
+    class="container-card"
+    *ngIf="livrosEncontrados$ | async as listaDeLivros; else telaInicial"
+  >
+    <section *ngFor="let livro of listaDeLivros">
       <app-livro [livro]="livro"></app-livro>
-    </div>
+    </section>
   </div>
   <ng-template #telaInicial>
     <div class="imagens">
